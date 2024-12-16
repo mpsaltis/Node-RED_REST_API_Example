@@ -19,5 +19,5 @@ The second two flows takes a fun twist—showing how easy it is to work with RES
 ![image](https://github.com/user-attachments/assets/95612c00-432d-442c-abec-7ba0eb054006)
 
 
-### Installed Pallets
+### Installed Palettes
 ![image](https://github.com/user-attachments/assets/b0962b11-5484-4f35-bf0d-f0654f5f6a2f)
