@@ -1,0 +1,406 @@
+[
+    {
+        "id": "594b189a5020a859",
+        "type": "tab",
+        "label": "CFP REST API",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1c40f64904cca9b2",
+        "type": "group",
+        "z": "594b189a5020a859",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "e6d1cfb9433a4d76",
+            "08a340b9a9db9a57",
+            "8bcd7b9fddbcb582",
+            "b50c8728b4750b97",
+            "553c9e2a8f96edf2",
+            "4a8bbdcb5f2cefe9",
+            "7149751477cc53cf",
+            "38afc4981ef06099",
+            "10a388dbd377e9e3",
+            "c3aec8f40c28c7dd"
+        ],
+        "x": 34,
+        "y": 39,
+        "w": 1052,
+        "h": 282
+    },
+    {
+        "id": "e6d1cfb9433a4d76",
+        "type": "function",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "name": "Format HTTP Request",
+        "func": "msg.url = \"https://api.collegefootballdata.com/rankings?year=2025&seasonType=regular&week=\" + msg.payload\nmsg.method = \"GET\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 80,
+        "wires": [
+            [
+                "8bcd7b9fddbcb582"
+            ]
+        ]
+    },
+    {
+        "id": "08a340b9a9db9a57",
+        "type": "ui_numeric",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "name": "",
+        "label": "Week Number",
+        "tooltip": "",
+        "group": "935b17bacb02df81",
+        "order": 5,
+        "width": 4,
+        "height": 1,
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": "1",
+        "max": 10,
+        "step": 1,
+        "className": "",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "e6d1cfb9433a4d76"
+            ]
+        ]
+    },
+    {
+        "id": "8bcd7b9fddbcb582",
+        "type": "http request",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "bearer",
+        "senderr": false,
+        "headers": [],
+        "x": 610,
+        "y": 80,
+        "wires": [
+            [
+                "b50c8728b4750b97",
+                "4a8bbdcb5f2cefe9"
+            ]
+        ]
+    },
+    {
+        "id": "b50c8728b4750b97",
+        "type": "debug",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "553c9e2a8f96edf2",
+        "type": "ui_table",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "group": "935b17bacb02df81",
+        "name": "",
+        "order": 3,
+        "width": 12,
+        "height": 10,
+        "columns": [
+            {
+                "field": "Rank",
+                "title": "Rank",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "School",
+                "title": "School",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Points",
+                "title": "Points",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Conference",
+                "title": "Conference",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "FirstPlaceVotes",
+                "title": "FirstPlaceVotes",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1010,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4a8bbdcb5f2cefe9",
+        "type": "function",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "name": "Parse Data For Table",
+        "func": "const POLL_NAME = \"AP Top 25\";\nconst TOP_N = 25;\n\ntry {\n    // If HTTP Request still returns text, parse it.\n    // (This makes the flow robust even if someone forgets to set ret=obj)\n    if (typeof msg.payload === \"string\") {\n        msg.payload = JSON.parse(msg.payload);\n    }\n\n    const root = msg.payload;\n\n    if (!Array.isArray(root) || root.length < 1) {\n        throw new Error(\"Expected msg.payload to be a non-empty array.\");\n    }\n\n    const data = root[0];\n    const polls = data && data.polls;\n\n    if (!Array.isArray(polls) || polls.length === 0) {\n        throw new Error(\"Expected msg.payload[0].polls to be a non-empty array.\");\n    }\n\n    const pollObj = polls.find(p => p && p.poll === POLL_NAME) || polls[0];\n    const ranks = pollObj && pollObj.ranks;\n\n    if (!Array.isArray(ranks) || ranks.length === 0) {\n        throw new Error(`No ranks found for poll: ${pollObj?.poll ?? \"(unknown)\"}`);\n    }\n\n    const top = ranks.slice(0, TOP_N).map(r => ({\n        Rank: r.rank ?? null,\n        School: r.school ?? \"\",\n        Conference: r.conference ?? \"\",\n        Points: r.points ?? 0,\n        FirstPlaceVotes: r.firstPlaceVotes ?? 0\n    }));\n\n    msg.payload = top;\n    msg.meta = {\n        season: data.season,\n        seasonType: data.seasonType,\n        week: data.week,\n        poll: pollObj.poll\n    };\n\n    return msg;\n\n} catch (err) {\n    msg.payload = [{ Rank: \"-\", School: \"ERROR\", Conference: err.message }];\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 80,
+        "wires": [
+            [
+                "553c9e2a8f96edf2"
+            ]
+        ]
+    },
+    {
+        "id": "7149751477cc53cf",
+        "type": "ui_media",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "group": "935b17bacb02df81",
+        "name": "CFP Logo",
+        "width": 5,
+        "height": 5,
+        "order": 1,
+        "category": "CFP",
+        "file": "Logo_of_college_football_playoff.svg.png",
+        "layout": "adjust",
+        "showcontrols": true,
+        "loop": true,
+        "onstart": false,
+        "muted": true,
+        "scope": "local",
+        "tooltip": "",
+        "x": 1000,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "38afc4981ef06099",
+        "type": "ui_text",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "group": "935b17bacb02df81",
+        "order": 2,
+        "width": 7,
+        "height": 4,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1010,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "10a388dbd377e9e3",
+        "type": "function",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "name": "function 1",
+        "func": "msg.payload = 'Welcome to the College Football Rankings page! \\\n                This section presents up - to - date ranking data retrieved using the SportsData.IO API.\\\n                By leveraging the flexibility of Node - RED, an HTTP request node fetches each coach’s polls directly from the API.\\\n                The JSON data is then formatted with a function node into a table.This data can then be viewed and sorted.'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 280,
+        "wires": [
+            [
+                "38afc4981ef06099"
+            ]
+        ]
+    },
+    {
+        "id": "c3aec8f40c28c7dd",
+        "type": "inject",
+        "z": "594b189a5020a859",
+        "g": "1c40f64904cca9b2",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 610,
+        "y": 280,
+        "wires": [
+            [
+                "10a388dbd377e9e3"
+            ]
+        ]
+    },
+    {
+        "id": "4931cc253c25cccb",
+        "type": "ui_spacer",
+        "z": "594b189a5020a859",
+        "name": "spacer",
+        "group": "935b17bacb02df81",
+        "order": 4,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "8e132bd6deb64ca6",
+        "type": "ui_spacer",
+        "z": "594b189a5020a859",
+        "name": "spacer",
+        "group": "935b17bacb02df81",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "74c6705ccabae05b",
+        "type": "ui_spacer",
+        "z": "594b189a5020a859",
+        "name": "spacer",
+        "group": "935b17bacb02df81",
+        "order": 7,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "9d97d8a6e4d88ab9",
+        "type": "ui_spacer",
+        "z": "594b189a5020a859",
+        "name": "spacer",
+        "group": "935b17bacb02df81",
+        "order": 8,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "6a607e9bbb3251c5",
+        "type": "ui_spacer",
+        "z": "594b189a5020a859",
+        "name": "spacer",
+        "group": "935b17bacb02df81",
+        "order": 9,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "3fd08161cecef544",
+        "type": "ui_spacer",
+        "z": "594b189a5020a859",
+        "name": "spacer",
+        "group": "935b17bacb02df81",
+        "order": 10,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "a18214c6370f9399",
+        "type": "ui_spacer",
+        "z": "594b189a5020a859",
+        "name": "spacer",
+        "group": "935b17bacb02df81",
+        "order": 11,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "935b17bacb02df81",
+        "type": "ui_group",
+        "name": "Rankings",
+        "tab": "070d70334bb1efc3",
+        "order": 1,
+        "disp": true,
+        "width": "24",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "070d70334bb1efc3",
+        "type": "ui_tab",
+        "name": "CFB - REST API",
+        "icon": "mi-sports_football",
+        "disabled": false,
+        "hidden": false
+    }
+]
